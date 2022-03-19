@@ -1,7 +1,6 @@
 package com.bondidos.clevertecfinal.domain.useCases
 
-import com.bondidos.clevertecfinal.data.api_model.FormModel
-import com.bondidos.clevertecfinal.domain.CreateForm
+import com.bondidos.clevertecfinal.domain.utils.CreateForm
 import com.bondidos.clevertecfinal.domain.Repository
 import com.bondidos.clevertecfinal.domain.uiModels.MultiViewModel
 import kotlinx.coroutines.flow.Flow

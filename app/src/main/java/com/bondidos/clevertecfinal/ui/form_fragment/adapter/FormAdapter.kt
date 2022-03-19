@@ -1,20 +1,16 @@
 package com.bondidos.clevertecfinal.ui.form_fragment.adapter
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import androidx.viewbinding.ViewBinding
 import com.bondidos.clevertecfinal.databinding.*
 import com.bondidos.clevertecfinal.domain.uiModels.MultiViewModel
+import com.bondidos.clevertecfinal.ui.events.FormEvent
 import java.lang.IllegalArgumentException
 
-class FormAdapter : RecyclerView.Adapter<FormAdapterViewHolder>() {
+class FormAdapter(private val event: (FormEvent) -> Unit) : RecyclerView.Adapter<FormAdapterViewHolder>() {
 
     private val adapterData = mutableListOf<MultiViewModel>()
 
@@ -58,7 +54,7 @@ class FormAdapter : RecyclerView.Adapter<FormAdapterViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: FormAdapterViewHolder, position: Int) {
-        holder.bind(adapterData[position])
+        holder.bind(adapterData[position],event)
     }
 
     override fun getItemCount(): Int = adapterData.size
@@ -91,78 +87,3 @@ class FormAdapter : RecyclerView.Adapter<FormAdapterViewHolder>() {
     }
 }
 
-class FormAdapterViewHolder(private val binding: ViewBinding) :
-    RecyclerView.ViewHolder(binding.root) {
-
-    fun bind(model: MultiViewModel) {
-        when (model) {
-            is MultiViewModel.Name -> bindName(model)
-            is MultiViewModel.TextField -> bindTextField(model)
-            is MultiViewModel.NumberField -> bindNumberField(model)
-            is MultiViewModel.SpinnerField -> bindSpinner(model)
-            is MultiViewModel.SubmitField -> bindSubmitField(model)
-        }
-    }
-
-    private fun bindSubmitField(model: MultiViewModel.SubmitField) {
-        (binding as SubmitFormViewBinding).apply {
-            submitButton.setOnClickListener { }
-        }
-    }
-
-    private fun bindSpinner(model: MultiViewModel.SpinnerField) {
-        (binding as ListInputViewBinding).apply {
-
-            //todo rework, make beauty )
-            val valuesList = model.values?.values?.toList()
-            //adapter
-            ArrayAdapter(
-                binding.root.context,
-                android.R.layout.simple_spinner_item,
-                requireNotNull(valuesList)
-            ).also { adapter ->
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spinner.adapter = adapter
-            }
-
-            val onItemSelectedListener =
-                object: AdapterView.OnItemSelectedListener{
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        Log.d("SPINNER", "$parent $position $id")
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-                    }
-
-                }
-
-            spinner.apply {
-                setSelection(0)
-            }
-            spinner.onItemSelectedListener = onItemSelectedListener
-        }
-    }
-
-    private fun bindNumberField(model: MultiViewModel.NumberField) {
-        (binding as NumberInputViewBinding).apply {
-        }
-
-    }
-
-    private fun bindTextField(model: MultiViewModel.TextField) {
-        (binding as TextInputViewBinding).apply {
-        }
-    }
-
-    private fun bindName(model: MultiViewModel.Name) {
-        (binding as NameViewBinding).apply {
-            binding.name.text = model.name
-        }
-    }
-}

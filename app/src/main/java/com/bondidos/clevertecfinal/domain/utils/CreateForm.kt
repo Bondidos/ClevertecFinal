@@ -1,4 +1,4 @@
-package com.bondidos.clevertecfinal.domain
+package com.bondidos.clevertecfinal.domain.utils
 
 import com.bondidos.clevertecfinal.data.api_model.FormModel
 import com.bondidos.clevertecfinal.domain.uiModels.MultiViewModel
@@ -11,15 +11,15 @@ class CreateForm constructor(private val formModel: FormModel) {
             when (field.type) {
                 TYPE_INPUT_TEXT -> {
                     form.add(MultiViewModel.Name(name = field.name))
-                    form.add((MultiViewModel.TextField))
+                    form.add((MultiViewModel.TextField(name = field.name)))
                 }
                 TYPE_INPUT_NUM -> {
                     form.add(MultiViewModel.Name(name = field.name))
-                    form.add((MultiViewModel.NumberField))
+                    form.add((MultiViewModel.NumberField(name = field.name)))
                 }
                 TYPE_INPUT_LIST -> {
                     form.add(MultiViewModel.Name(name = field.name))
-                    form.add((MultiViewModel.SpinnerField(field.values)))
+                    form.add((MultiViewModel.SpinnerField(name = field.name,values = field.values)))
                 }
             }
         }

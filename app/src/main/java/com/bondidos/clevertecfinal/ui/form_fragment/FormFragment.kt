@@ -25,7 +25,7 @@ class FormFragment : Fragment(R.layout.form_fragment) {
     @Inject
     lateinit var factory: FormFactory
     private val viewModel: FormViewModel by viewModels { factory }
-    private val formAdapter: FormAdapter by lazy { FormAdapter() }
+    private val formAdapter: FormAdapter by lazy { FormAdapter(viewModel::emitEvent) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
