@@ -13,4 +13,21 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="main_text_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/text_padding</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">@dimen/main_text_size</item>
+    </style>
+
+    <style name="input_text_field_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:padding">@dimen/text_padding</item>
+        <item name="android:textColorHint">#757575</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textSize">@dimen/secondary_text_size</item>
+    </style>
 </resources>
