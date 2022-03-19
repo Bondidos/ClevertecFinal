@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bondidos.clevertecfinal.domain.utils.PostFormBuilder
 import com.bondidos.clevertecfinal.domain.useCases.FetchFormUseCase
+import com.bondidos.clevertecfinal.domain.useCases.PostFormUseCase
 import com.bondidos.clevertecfinal.ui.events.FormEvent
 import com.bondidos.clevertecfinal.ui.uiState.State
 import kotlinx.coroutines.flow.*
@@ -15,11 +16,12 @@ import javax.inject.Inject
 const val TAG: String = "VM"
 
 class FormViewModel @Inject constructor(
-    private val fetchFormUseCase: FetchFormUseCase
+    private val fetchFormUseCase: FetchFormUseCase,
+    private val postFormUseCase: PostFormUseCase
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<State> = MutableStateFlow(State.Initial)
-    val uiState: StateFlow<State> = _uiState
+    val uiState: StateFlow<State> = _uiState.asStateFlow()
 
     private val postForm: PostFormBuilder = PostFormBuilder()
 
@@ -28,12 +30,24 @@ class FormViewModel @Inject constructor(
     }
 
     fun emitEvent(event: FormEvent) {
-        when(event){
+        when (event) {
             is FormEvent.FieldEvent -> postForm.onFieldEvent(event)
             is FormEvent.SubmitEvent -> {
                 val form = postForm.build()
-
-                Log.d(TAG,form.toString())
+                viewModelScope.launch {
+                    postFormUseCase(form)
+                        .onStart {
+                            _uiState.value = State.Loading
+                        }
+                        .catch {
+                            _uiState.value = State.Error(
+                                message = "Extract error message to r.strings"
+                            )
+                        }
+                        .collect {  postResult ->
+                            _uiState.value = State.Posted(postResult.result)
+                        }
+                }
             }
         }
     }

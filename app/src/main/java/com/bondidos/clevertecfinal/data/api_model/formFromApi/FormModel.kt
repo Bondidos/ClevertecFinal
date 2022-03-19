@@ -1,6 +1,7 @@
-package com.bondidos.clevertecfinal.data.api_model
+package com.bondidos.clevertecfinal.data.api_model.formFromApi
 
 
+import com.bondidos.clevertecfinal.data.api_model.formFromApi.Field
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

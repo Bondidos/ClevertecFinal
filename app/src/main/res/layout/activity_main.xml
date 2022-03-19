@@ -8,7 +8,7 @@
 
    <androidx.fragment.app.FragmentContainerView
        android:id="@+id/container"
-       android:name="com.bondidos.clevertecfinal.ui.form_fragment.FormFragment"
+       android:name="com.bondidos.clevertecfinal.ui.form_fragment.formViewModel.FormFragment"
        android:layout_width="match_parent"
        android:layout_height="match_parent"/>
 
