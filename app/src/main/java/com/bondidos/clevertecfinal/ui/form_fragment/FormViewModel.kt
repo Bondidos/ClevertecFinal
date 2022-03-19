@@ -19,9 +19,6 @@ class FormViewModel @Inject constructor(
     private val _uiState: MutableStateFlow<State> = MutableStateFlow(State.Initial)
     val uiState: StateFlow<State> = _uiState
 
-    private val _uiEvent = MutableSharedFlow<Event>(0)
-    val uiEvent: SharedFlow<Event> = _uiEvent
-
     init {
         fetchForm()
     }

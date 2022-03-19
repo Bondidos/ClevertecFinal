@@ -8,10 +8,12 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bondidos.clevertecfinal.R
 import com.bondidos.clevertecfinal.databinding.FormFragmentBinding
 import com.bondidos.clevertecfinal.ui.di.appComponent
+import com.bondidos.clevertecfinal.ui.form_fragment.adapter.FormAdapter
 import com.bondidos.clevertecfinal.ui.uiState.State
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
@@ -23,6 +25,7 @@ class FormFragment : Fragment(R.layout.form_fragment) {
     @Inject
     lateinit var factory: FormFactory
     private val viewModel: FormViewModel by viewModels { factory }
+    private val formAdapter: FormAdapter by lazy { FormAdapter() }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -31,25 +34,34 @@ class FormFragment : Fragment(R.layout.form_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initState()
+        initRecyclerView()
+        initDataListening()
     }
 
-    private fun initState(){
+    private fun initDataListening() {
         lifecycleScope.launchWhenCreated {
-            viewModel.uiState.collect{ state ->
-                when(state){
+            viewModel.uiState.collect { state ->
+                when (state) {
                     is State.Loading -> binding.progressBar.isVisible = true
                     is State.Success -> {
+                        formAdapter.setData(state.data)
                         binding.progressBar.isVisible = false
-                        binding.text.text = state.data.toString()
                     }
                     is State.Error -> {
                         binding.progressBar.isVisible = false
-                        Toast.makeText(requireContext(),state.message,Toast.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
                     }
                     else -> Unit
                 }
             }
+        }
+    }
+
+    private fun initRecyclerView() {
+        binding.recycler.apply {
+            layoutManager =
+                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            adapter = formAdapter
         }
     }
 }

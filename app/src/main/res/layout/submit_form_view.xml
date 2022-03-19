@@ -6,6 +6,7 @@
     android:layout_height="@dimen/item_height">
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/submit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/submit_form"
