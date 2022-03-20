@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bondidos.clevertecfinal.databinding.*
-import com.bondidos.clevertecfinal.domain.uiModels.MultiViewModel
+import com.bondidos.clevertecfinal.domain.entities.ui_model.MultiViewModel
 import com.bondidos.clevertecfinal.ui.events.FormEvent
 import java.lang.IllegalArgumentException
 
@@ -41,7 +41,7 @@ class FormAdapter(private val event: (FormEvent) -> Unit) : RecyclerView.Adapter
                 parent,
                 false
             )
-            else -> throw IllegalArgumentException("Invalid type") // todo string extract
+            else -> throw IllegalArgumentException("Invalid type")
         }
         binding.root.layoutParams.apply {
             if (viewType == TYPE_SUBMIT &&

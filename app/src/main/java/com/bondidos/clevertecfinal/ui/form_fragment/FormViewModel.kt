@@ -1,8 +1,8 @@
 package com.bondidos.clevertecfinal.ui.form_fragment
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bondidos.clevertecfinal.domain.constants.Constants.NETWORK_ERROR
 import com.bondidos.clevertecfinal.domain.utils.PostFormBuilder
 import com.bondidos.clevertecfinal.domain.useCases.FetchFormUseCase
 import com.bondidos.clevertecfinal.domain.useCases.PostFormUseCase
@@ -12,9 +12,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
-const val TAG: String = "VM"
-
 class FormViewModel @Inject constructor(
     private val fetchFormUseCase: FetchFormUseCase,
     private val postFormUseCase: PostFormUseCase
@@ -23,11 +20,12 @@ class FormViewModel @Inject constructor(
     private val _uiState: MutableStateFlow<State> = MutableStateFlow(State.Initial)
     val uiState: StateFlow<State> = _uiState.asStateFlow()
 
+    private val _uiEvent = MutableSharedFlow<String>()
+    val uiEvent: SharedFlow<String> = _uiEvent.asSharedFlow()
+
     private val postForm: PostFormBuilder = PostFormBuilder()
 
-    init {
-        fetchForm()
-    }
+    init { fetchForm() }
 
     fun emitEvent(event: FormEvent) {
         when (event) {
@@ -36,16 +34,9 @@ class FormViewModel @Inject constructor(
                 val form = postForm.build()
                 viewModelScope.launch {
                     postFormUseCase(form)
-                        .onStart {
-                            _uiState.value = State.Loading
-                        }
-                        .catch {
-                            _uiState.value = State.Error(
-                                message = "Extract error message to r.strings"
-                            )
-                        }
-                        .collect {  postResult ->
-                            _uiState.value = State.Posted(postResult.result)
+                        .catch { _uiEvent.emit(NETWORK_ERROR) }
+                        .collect { postResult ->
+                            _uiEvent.emit(postResult.result)
                         }
                 }
             }
@@ -55,21 +46,16 @@ class FormViewModel @Inject constructor(
     private fun fetchForm() {
         viewModelScope.launch {
             fetchFormUseCase()
-                .onStart {
-                    Log.d(TAG, "State.Loading")
-                    _uiState.value = State.Loading
-                }
+                .onStart { _uiState.value = State.Loading }
                 .catch {
-                    Log.d(TAG, "State.Error")
-                    _uiState.value = State.Error(
-                        message = "Extract error message to r.strings"
-                    )
+                    _uiState.value = State.Error
+                    _uiEvent.emit(NETWORK_ERROR)
                 }
-                .collect {
-                    Log.d(TAG, "State.Collect")
-                    Log.d(TAG, "$it")
-                    _uiState.value = State.Success(it)
-                }
+                .collect { _uiState.value = State.Success(it) }
         }
+    }
+
+    fun refresh() {
+        fetchForm()
     }
 }

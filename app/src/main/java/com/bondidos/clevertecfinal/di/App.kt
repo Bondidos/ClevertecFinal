@@ -1,4 +1,4 @@
-package com.bondidos.clevertecfinal.ui.di
+package com.bondidos.clevertecfinal.di
 
 import android.app.Application
 import android.content.Context
@@ -8,10 +8,9 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-//        appComponent = DaggerAppComponent.create()
-            appComponent = DaggerAppComponent.builder()
-                .application(this)
-                .build()
+        appComponent = DaggerAppComponent.builder()
+            .application(this)
+            .build()
     }
 }
 

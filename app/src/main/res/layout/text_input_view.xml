@@ -19,7 +19,7 @@
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/textInputEditText"
         style="@style/input_text_field_style"
-        android:hint="@string/app_name"
+        android:hint="@string/input_text"
         android:inputType="textAutoComplete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

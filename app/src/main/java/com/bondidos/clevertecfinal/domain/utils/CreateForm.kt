@@ -1,8 +1,8 @@
 package com.bondidos.clevertecfinal.domain.utils
 
-import com.bondidos.clevertecfinal.data.api_model.formFromApi.FormModel
-import com.bondidos.clevertecfinal.domain.UiFormModel
-import com.bondidos.clevertecfinal.domain.uiModels.MultiViewModel
+import com.bondidos.clevertecfinal.domain.entities.api_model.formFromApi.FormModel
+import com.bondidos.clevertecfinal.domain.entities.ui_model.UiFormModel
+import com.bondidos.clevertecfinal.domain.entities.ui_model.MultiViewModel
 
 class CreateForm constructor(private val formModel: FormModel) {
 

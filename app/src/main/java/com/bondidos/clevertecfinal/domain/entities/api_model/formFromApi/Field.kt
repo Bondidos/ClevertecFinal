@@ -1,4 +1,4 @@
-package com.bondidos.clevertecfinal.data.api_model.formFromApi
+package com.bondidos.clevertecfinal.domain.entities.api_model.formFromApi
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -12,5 +12,5 @@ data class Field(
     @Json(name = "type")
     val type: String,
     @Json(name = "values")
-    val values: Map<String,String>?
+    val values: Map<String, String>?
 )

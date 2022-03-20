@@ -1,4 +1,4 @@
-package com.bondidos.clevertecfinal.domain.uiModels
+package com.bondidos.clevertecfinal.domain.entities.ui_model
 
 sealed class MultiViewModel {
     data class Name(

@@ -1,9 +1,8 @@
 package com.bondidos.clevertecfinal.domain.useCases
 
 import com.bondidos.clevertecfinal.domain.utils.CreateForm
-import com.bondidos.clevertecfinal.domain.Repository
-import com.bondidos.clevertecfinal.domain.UiFormModel
-import com.bondidos.clevertecfinal.domain.uiModels.MultiViewModel
+import com.bondidos.clevertecfinal.domain.repository.Repository
+import com.bondidos.clevertecfinal.domain.entities.ui_model.UiFormModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

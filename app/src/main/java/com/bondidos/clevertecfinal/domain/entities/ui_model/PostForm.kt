@@ -1,4 +1,4 @@
-package com.bondidos.clevertecfinal.domain
+package com.bondidos.clevertecfinal.domain.entities.ui_model
 
 import com.squareup.moshi.JsonClass
 

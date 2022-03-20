@@ -1,11 +1,11 @@
-package com.bondidos.clevertecfinal.ui.di
+package com.bondidos.clevertecfinal.di
 
 import android.app.Application
 import android.content.Context
 import com.bondidos.clevertecfinal.R
-import com.bondidos.clevertecfinal.data.RepositoryImpl
+import com.bondidos.clevertecfinal.data.repository.RepositoryImpl
 import com.bondidos.clevertecfinal.data.api_service.ClevertecApi
-import com.bondidos.clevertecfinal.domain.Repository
+import com.bondidos.clevertecfinal.domain.repository.Repository
 import com.bondidos.clevertecfinal.domain.constants.Constants.BASE_URL
 import com.bondidos.clevertecfinal.ui.form_fragment.formViewModel.FormFragment
 import com.bumptech.glide.Glide
@@ -18,13 +18,15 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Singleton
 
-@Component(modules = [DataModule::class, Binding::class])
+@Component(modules = [RepositoryModule::class, Binding::class, FormModule::class])
+@Singleton
 interface AppComponent {
     fun inject(fragment: FormFragment)
 
     @Component.Builder
-    interface Builder{
+    interface Builder {
 
         @BindsInstance
         fun application(application: Application): Builder
@@ -39,16 +41,13 @@ interface Binding {
     fun bindRepository(repositoryImpl: RepositoryImpl): Repository
 
     @Binds
-    fun context(appInstance:Application): Context
+    fun context(appInstance: Application): Context
 }
 
-
-//todo sort
-
-
 @Module
-object DataModule {
+object FormModule {
 
+    @Singleton
     @Provides
     fun provideGlideInstance(
         context: Context
@@ -58,6 +57,13 @@ object DataModule {
             .error(R.drawable.ic_baseline_error_24)
             .diskCacheStrategy(DiskCacheStrategy.DATA)
     )
+}
+
+@Module(includes = [NetworkModule::class])
+object RepositoryModule
+
+@Module
+object NetworkModule {
 
     @Provides
     fun provideClevertecApiService(retrofit: Retrofit): ClevertecApi =
@@ -83,6 +89,7 @@ object DataModule {
             .create(moshi)
 
     @Provides
+    @Singleton
     fun provideRetrofit(
         moshiConverterFactory: MoshiConverterFactory,
         okHttpClient: OkHttpClient

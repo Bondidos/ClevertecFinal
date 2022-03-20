@@ -1,7 +1,5 @@
 package com.bondidos.clevertecfinal.ui.form_fragment.adapter
 
-import android.R
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -9,7 +7,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.bondidos.clevertecfinal.databinding.*
-import com.bondidos.clevertecfinal.domain.uiModels.MultiViewModel
+import com.bondidos.clevertecfinal.domain.entities.ui_model.MultiViewModel
 import com.bondidos.clevertecfinal.ui.events.FormEvent
 
 class FormAdapterViewHolder(private val binding: ViewBinding) :
@@ -36,18 +34,18 @@ class FormAdapterViewHolder(private val binding: ViewBinding) :
     private fun bindSpinner(model: MultiViewModel.SpinnerField, emitFormEvent: (FormEvent)-> Unit) {
         (binding as ListInputViewBinding).apply {
 
-            //todo rework, make beauty )
             val valuesList = model.values?.values?.toList()
             //adapter
             ArrayAdapter(
                 binding.root.context,
-                R.layout.simple_spinner_item,
+                android.R.layout.simple_spinner_item,
                 requireNotNull(valuesList)
             ).also { adapter ->
-                adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spinner.adapter = adapter
             }
 
+            // listener
             val onItemSelectedListener =
                 object: AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(
@@ -56,9 +54,7 @@ class FormAdapterViewHolder(private val binding: ViewBinding) :
                         position: Int,
                         id: Long
                     ) {
-                        Log.d("SPINNER", "$parent $position $id")
                         val valueString = valuesList[position]
-                        //todo check this KEY?
                         val resultString = model.values.keys.find {
                             model.values[it] == valueString
                         }
@@ -68,16 +64,10 @@ class FormAdapterViewHolder(private val binding: ViewBinding) :
                             text = resultString ?: "v1"
                         ))
                     }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-                    }
-
+                    override fun onNothingSelected(parent: AdapterView<*>?) {}
                 }
 
-            spinner.apply {
-                setSelection(0)
-            }
+            spinner.setSelection(0)
             spinner.onItemSelectedListener = onItemSelectedListener
         }
     }
