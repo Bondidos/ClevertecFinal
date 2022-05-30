@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">ClevertecFinal</string>
+    <string name="logo_image">Logo Image</string>
+    <string name="text_field">Текстовое поле</string>
+    <string name="submit_form">Submit form</string>
+    <string name="choose_one_item">choose one item</string>
+    <string name="ok">OK</string>
+    <string name="input_text">Text input</string>
+    <string name="input_number">Number input</string>
 </resources>
